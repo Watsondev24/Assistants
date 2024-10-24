@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Assistant Experience</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;700&display=swap');
+
+        /* Body styles with gradient background */
+        body, .second-ui {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(145deg, #E6F1F3 0%, #F8FBFD 100%);
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            position: relative;
+            flex-direction: column;
+        }
+
+        /* Initial UI styles */
+        .initial-ui {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .title, .buzzword {
+            font-family: 'Inter', sans-serif;
+            font-weight: 100;
+            color: #4D4D4D;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .title {
+            font-size: 4rem;
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .title::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120%;
+            height: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 50%;
+            filter: blur(8px);
+        }
+
+        .gradient-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(to bottom, rgba(240, 240, 240, 0) 0%, rgba(180, 180, 180, 0.1) 50%, rgba(240, 240, 240, 0) 100%);
+            z-index: 1;
+            filter: blur(8px);
+        }
+
+        .start-lab {
+            position: absolute;
+            bottom: 3%;
+            right: 3%;
+            background-color: #4D4D4D;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-weight: 100;
+            font-size: 1.2rem;
+            padding: 10px 20px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .start-lab:hover {
+            background-color: #333;
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .buzzword {
+            position: absolute;
+            font-size: 1.2rem;
+            opacity: 0;
+            animation: fadeInOut 5s infinite ease-in-out;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .buzzword1 { top: 10%; left: 15%; animation-delay: 0s; }
+        .buzzword2 { top: 20%; right: 10%; animation-delay: 2s; }
+        .buzzword3 { bottom: 15%; left: 20%; animation-delay: 4s; }
+        .buzzword4 { bottom: 10%; right: 20%; animation-delay: 6s; }
+        .buzzword5 { top: 30%; left: 40%; animation-delay: 8s; }
+        .buzzword6 { top: 25%; right: 5%; animation-delay: 10s; }
+        .buzzword7 { bottom: 30%; left: 25%; animation-delay: 12s; }
+        .buzzword8 { top: 40%; right: 30%; animation-delay: 14s; }
+        .buzzword9 { bottom: 5%; left: 35%; animation-delay: 16s; }
+        .buzzword10 { top: 5%; right: 35%; animation-delay: 18s; }
+
+        /* Second UI styles */
+        .second-ui {
+            display: none;
+        }
+
+        /* Styles for the second UI text */
+        .typing-text {
+            font-family: 'Inter', sans-serif;
+            font-weight: 100;
+            color: #4D4D4D;
+            font-size: 3rem; /* Set a large font size */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+            text-align: center; /* Center-align the text */
+            line-height: 1.2;
+        }
+
+        .typing-indicator {
+            display: inline-block;
+            width: 0.5em;
+            height: 0.5em;
+            background: #4D4D4D;
+            border-radius: 50%;
+            margin: 0 0.2em;
+            animation: blink 0.8s infinite;
+        }
+
+        @keyframes blink {
+            0% { opacity: 0.2; }
+            20% { opacity: 1; }
+            100% { opacity: 0.2; }
+        }
+
+        /* Styles for buttons in the second UI */
+        .buttons-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px; /* Increase gap between buttons */
+            margin-top: 20px; /* Adjust margin from text */
+        }
+
+        .start-button {
+            background-color: #4D4D4D;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-weight: 100;
+            font-size: 1.2rem;
+            padding: 10px 20px; /* Adjust button padding */
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            text-decoration: none;
+        }
+
+        .start-button:hover {
+            background-color: #333;
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Initial UI Container -->
+    <div class="initial-ui">
+        <!-- Gradient Overlay for Title Area -->
+        <div class="gradient-overlay"></div>
+
+        <!-- Main Title -->
+        <div class="title">AI Assistant Experience</div>
+
+        <!-- Buzzwords -->
+        <div class="buzzword buzzword1">Conversational AI</div>
+        <div class="buzzword buzzword2">Generative AI</div>
+        <div class="buzzword buzzword3">Automation</div>
+        <div class="buzzword buzzword4">Streamline</div>
+        <div class="buzzword buzzword5">Efficiency</div>
+        <div class="buzzword buzzword6">Productivity</div>
+        <div class="buzzword buzzword7">Scalability</div>
+        <div class="buzzword buzzword8">Customer Experience</div>
+        <div class="buzzword buzzword9">Personalisation</div>
+        <div class="buzzword buzzword10">AI-Powered Insights</div>
+
+        <!-- Start Lab Button -->
+        <div class="start-lab" id="startLabButton">
+            <span>Start Lab</span> &rarr;
+        </div>
+    </div>
+
+    <!-- Second UI Container -->
+    <div class="second-ui" id="secondUI">
+        <!-- Typing text container -->
+        <div id="typing-text" class="typing-text"></div>
+        <span class="typing-indicator" id="typing-indicator"></span>
+
+        <!-- Buttons container -->
+        <div class="buttons-container" id="buttons-container">
+            <a href="https://web-chat.global.assistant.watson.appdomain.cloud/preview.html?backgroundImageURL=https%3A%2F%2Fus-south.assistant.watson.cloud.ibm.com%2Fpublic%2Fimages%2Fupx-24db645e-915d-4aae-ba5a-b6914e5cc093%3A%3Ab7767541-a229-4503-b8b7-12d7e8c53655&integrationID=e5c6eaf7-3f2c-4f3b-ab45-002719fd1621&region=us-south&serviceInstanceID=24db645e-915d-4aae-ba5a-b6914e5cc093" target="_blank" class="start-button"><span>Customer Experience Journey</span> &rarr;</a>
+        </div>
+    </div>
+
+    <script>
+        const startLabButton = document.getElementById('startLabButton');
+        const initialUI = document.querySelector('.initial-ui');
+        const secondUI = document.getElementById('secondUI');
+        const typingTextContainer = document.getElementById('typing-text');
+        const typingIndicator = document.getElementById('typing-indicator');
+        const buttonsContainer = document.getElementById('buttons-container');
+
+        const text = "Enhance your customer's interactions.\nDiscover how AI Assistants can make an impact.";
+        let index = 0;
+
+        function typeText() {
+            if (index < text.length) {
+                if (text[index] === "\n") {
+                    typingTextContainer.innerHTML += "<br>";
+                } else {
+                    typingTextContainer.innerHTML += text[index];
+                }
+                index++;
+                setTimeout(typeText, 50); // Adjust typing speed here
+            } else {
+                typingIndicator.style.display = 'none';
+                buttonsContainer.style.display = 'flex';
+            }
+        }
+
+        startLabButton.addEventListener('click', () => {
+            initialUI.style.display = 'none'; // Hide the initial UI
+            secondUI.style.display = 'flex'; // Show the second UI
+            typeText(); // Start the typing effect
+        });
+    </script>
+</body>
+</html>
